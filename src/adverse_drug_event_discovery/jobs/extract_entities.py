@@ -41,17 +41,21 @@ def _extracted_rows(record: dict, answer: str, rejected: list[dict]) -> list[dic
     try:
         items = parse_items(answer)
     except ValueError as error:
-        rejected.append({"id": record["id"], "reason": str(error), "model_answer": answer})
+        rejected.append(
+            {"text_id": record["text_id"], "reason": str(error), "model_answer": answer}
+        )
         return []
     rows = []
     for item in items:
         reason = validate_entity_item(item)
         if reason:
-            rejected.append({"id": record["id"], "reason": reason, "model_answer": str(item)})
+            rejected.append(
+                {"text_id": record["text_id"], "reason": reason, "model_answer": str(item)}
+            )
             continue
         rows.append(
             {
-                "id": record["id"],
+                "text_id": record["text_id"],
                 "chunk": item["chunk"],
                 "entity": item["entity"],
                 "confidence": float(item["confidence"]),

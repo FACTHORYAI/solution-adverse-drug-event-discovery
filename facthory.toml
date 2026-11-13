@@ -37,6 +37,18 @@ path = "data/sample/relations.parquet"
 synthetic = true
 licence = "CC0-1.0"
 
+[[dataset]]
+name = "graph_nodes"
+path = "data/sample/graph_nodes.parquet"
+synthetic = true
+licence = "CC0-1.0"
+
+[[dataset]]
+name = "graph_edges"
+path = "data/sample/graph_edges.parquet"
+synthetic = true
+licence = "CC0-1.0"
+
 # The four extraction jobs take a TextModel as a third argument; Facthory provides
 # model access. The repository ships a recorded stand-in (text/recorded.py).
 [[job]]
@@ -66,6 +78,13 @@ entry = "adverse_drug_event_discovery.jobs.extract_relations:run"
 mode = "job"
 inputs = ["ade_events"]
 outputs = ["relations", "rejected_relations"]
+
+[[job]]
+name = "build_knowledge_graph"
+entry = "adverse_drug_event_discovery.jobs.build_knowledge_graph:run"
+mode = "call"
+inputs = ["ade_events", "entities", "assertions", "relations"]
+outputs = ["graph_nodes", "graph_edges"]
 
 [[job]]
 name = "most_common_entities"

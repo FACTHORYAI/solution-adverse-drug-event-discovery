@@ -1,4 +1,4 @@
-"""The ADEs most often reported as actually experienced."""
+"""The ADEs mentioned in the most texts with an assertion other than Absent."""
 
 from __future__ import annotations
 
@@ -22,7 +22,7 @@ class Params:
 
 
 def run(inputs: dict[str, pa.Table], params: Params) -> dict[str, pa.Table]:
-    """Return the ADEs with the most conversations reporting them as experienced."""
+    """Return the ADEs mentioned in the most texts, leaving out the Absent mentions."""
     if params.limit < 1:
         message = f"Parameter limit is {params.limit}; it must be at least 1"
         raise ValueError(message)

@@ -1,7 +1,7 @@
 -- Drug-ADE pairs the relation extraction actually linked within one conversation
 -- (relation "1"), with each pair's share of the busiest drug for its ADE.
 WITH pairs AS (
-    SELECT DISTINCT id, lower(chunk2) AS drug, chunk1 AS ade
+    SELECT DISTINCT text_id, lower(chunk2) AS drug, chunk1 AS ade
     FROM relations
     WHERE relation = '1'
       AND entity1 = 'ADE'

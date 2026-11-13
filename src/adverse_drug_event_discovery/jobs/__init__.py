@@ -10,6 +10,7 @@ import pyarrow as pa
 
 from adverse_drug_event_discovery.jobs import (
     asserted_ade_frequency,
+    build_knowledge_graph,
     classify_ade,
     drug_ade_pairs,
     extract_assertions,
@@ -73,6 +74,14 @@ REGISTRY: dict[str, JobSpec] = {
             needs_model=True,
         ),
         JobSpec(
+            name="build_knowledge_graph",
+            description="Build the adverse-drug-event knowledge graph as node and edge tables.",
+            run=build_knowledge_graph.run,
+            params_cls=build_knowledge_graph.Params,
+            inputs=build_knowledge_graph.INPUTS,
+            outputs=build_knowledge_graph.OUTPUTS,
+        ),
+        JobSpec(
             name="most_common_entities",
             description="The most-mentioned drug and ADE names.",
             run=most_common_entities.run,
@@ -82,7 +91,7 @@ REGISTRY: dict[str, JobSpec] = {
         ),
         JobSpec(
             name="asserted_ade_frequency",
-            description="The ADEs most often reported as actually experienced.",
+            description="The ADEs mentioned in the most texts with an assertion other than Absent.",
             run=asserted_ade_frequency.run,
             params_cls=asserted_ade_frequency.Params,
             inputs=asserted_ade_frequency.INPUTS,
