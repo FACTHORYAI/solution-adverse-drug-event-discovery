@@ -1,0 +1,99 @@
+[solution]
+id = "com.facthory.adverse_drug_event_discovery"
+title = "Adverse Drug Event Discovery"
+version = "0.1.0"
+contract = "0-draft"
+licence = "Apache-2.0"
+health_related = true
+
+# Sample tables. All synthetic, generated for this repository (CC0-1.0); see data/README.md.
+[[dataset]]
+name = "ade_events"
+path = "data/sample/ade_events.parquet"
+synthetic = true
+licence = "CC0-1.0"
+
+[[dataset]]
+name = "ade_classification"
+path = "data/sample/ade_classification.parquet"
+synthetic = true
+licence = "CC0-1.0"
+
+[[dataset]]
+name = "entities"
+path = "data/sample/entities.parquet"
+synthetic = true
+licence = "CC0-1.0"
+
+[[dataset]]
+name = "assertions"
+path = "data/sample/assertions.parquet"
+synthetic = true
+licence = "CC0-1.0"
+
+[[dataset]]
+name = "relations"
+path = "data/sample/relations.parquet"
+synthetic = true
+licence = "CC0-1.0"
+
+# The four extraction jobs take a TextModel as a third argument; Facthory provides
+# model access. The repository ships a recorded stand-in (text/recorded.py).
+[[job]]
+name = "classify_ade"
+entry = "adverse_drug_event_discovery.jobs.classify_ade:run"
+mode = "job"
+inputs = ["ade_events"]
+outputs = ["ade_classification", "rejected_classifications"]
+
+[[job]]
+name = "extract_entities"
+entry = "adverse_drug_event_discovery.jobs.extract_entities:run"
+mode = "job"
+inputs = ["ade_events"]
+outputs = ["entities", "rejected_entities"]
+
+[[job]]
+name = "extract_assertions"
+entry = "adverse_drug_event_discovery.jobs.extract_assertions:run"
+mode = "job"
+inputs = ["ade_events"]
+outputs = ["assertions", "rejected_assertions"]
+
+[[job]]
+name = "extract_relations"
+entry = "adverse_drug_event_discovery.jobs.extract_relations:run"
+mode = "job"
+inputs = ["ade_events"]
+outputs = ["relations", "rejected_relations"]
+
+[[job]]
+name = "most_common_entities"
+entry = "adverse_drug_event_discovery.jobs.most_common_entities:run"
+mode = "call"
+inputs = ["entities"]
+outputs = ["most_common"]
+
+[[job]]
+name = "asserted_ade_frequency"
+entry = "adverse_drug_event_discovery.jobs.asserted_ade_frequency:run"
+mode = "call"
+inputs = ["assertions"]
+outputs = ["asserted_ades"]
+
+[[job]]
+name = "drug_ade_pairs"
+entry = "adverse_drug_event_discovery.jobs.drug_ade_pairs:run"
+mode = "call"
+inputs = ["entities"]
+outputs = ["drug_ade_pairs"]
+
+[[job]]
+name = "linked_drug_ade_pairs"
+entry = "adverse_drug_event_discovery.jobs.linked_drug_ade_pairs:run"
+mode = "call"
+inputs = ["relations"]
+outputs = ["linked_pairs"]
+
+[skill]
+instructions = "skills/adverse_drug_event_discovery.md"

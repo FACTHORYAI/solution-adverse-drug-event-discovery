@@ -30,3 +30,36 @@ This is software for research and analytics. It is not a medical device and must
 ## Licence
 
 Apache-2.0. See [LICENSE](LICENSE). "Facthory" and the Facthory logo are trademarks of their owner and are not covered by that licence.
+
+## Jobs
+
+| Job | What it does | Inputs | Outputs |
+| --- | --- | --- | --- |
+| `classify_ade` | Decides whether each conversational text reports an adverse drug event | `ade_events` | `ade_classification`, `rejected_classifications` |
+| `extract_entities` | Extracts the ADE and DRUG mentions with their confidence | `ade_events` | `entities`, `rejected_entities` |
+| `extract_assertions` | Judges whether each ADE mention is Present, Absent, Possible, Hypothetical, Conditional or Someone_else | `ade_events` | `assertions`, `rejected_assertions` |
+| `extract_relations` | Extracts the ADE-DRUG pairs that belong together (relation "1") | `ade_events` | `relations`, `rejected_relations` |
+| `most_common_entities` | The most-mentioned drug and ADE names | `entities` | `most_common` |
+| `asserted_ade_frequency` | The ADEs most often reported as actually experienced | `assertions` | `asserted_ades` |
+| `drug_ade_pairs` | Drug-ADE pairs by co-occurrence within the same conversation, normalised per ADE | `entities` | `drug_ade_pairs` |
+| `linked_drug_ade_pairs` | Drug-ADE pairs the relation extraction linked, normalised per ADE | `relations` | `linked_pairs` |
+
+The four extraction jobs take a `TextModel` (see `src/adverse_drug_event_discovery/text/interface.py`) as a third argument; Facthory provides model access, and every model answer is validated before it becomes a row. Named measures for the classifier and the assertion statuses live in `metrics/`.
+
+## Data
+
+The sample tables in `data/sample/` are synthetic and openly licensed (CC0-1.0): `ade_events`, `ade_classification`, `entities`, `assertions` and `relations`. See [data/README.md](data/README.md) for one row per file with origin and licence. No real patient data and no real conversations.
+
+## Run it locally
+
+```
+uv sync
+uv run python -m adverse_drug_event_discovery most_common_entities --entity-type DRUG
+uv run python -m adverse_drug_event_discovery drug_ade_pairs --min-conversations 2
+uv run pytest
+```
+
+`uv run python -m adverse_drug_event_discovery --help` lists every job; each job has its own `--help`. The four extraction jobs additionally take `--model-answers <file>` with a recorded-answers JSON (see `tests/recorded_answers.json`), since they read texts through a model behind `text.interface`; the analysis jobs run without any model.
+
+Co-occurrence is not causation: `drug_ade_pairs` counts the conversations that mention a drug and an ADE together, `linked_drug_ade_pairs` counts the pairs the relation extraction links, and `normalized_count` expresses each pair's count as a share of the busiest drug for its ADE.
+
