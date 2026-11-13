@@ -2,10 +2,10 @@
 -- share of the busiest drug for its ADE (the per-ADE min-max normalisation of the
 -- co-occurrence counts).
 WITH pairs AS (
-    SELECT DISTINCT e.id, lower(e.chunk) AS drug, a.chunk AS ade
+    SELECT DISTINCT e.text_id, lower(e.chunk) AS drug, a.chunk AS ade
     FROM entities AS e
     JOIN entities AS a
-        ON a.id = e.id
+        ON a.text_id = e.text_id
     WHERE e.entity = 'DRUG'
       AND a.entity = 'ADE'
       AND e.confidence >= $min_confidence

@@ -3,4 +3,4 @@ SELECT CAST(SUM(CASE WHEN e.is_ade = c.predicted_ade THEN 1 ELSE 0 END) AS DOUBL
        / count(*) AS accuracy
 FROM ade_classification AS c
 JOIN ade_events AS e
-    ON e.id = c.id
+    ON e.text_id = c.text_id

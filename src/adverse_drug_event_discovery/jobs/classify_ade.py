@@ -35,9 +35,11 @@ def run(inputs: dict[str, pa.Table], params: Params, model: TextModel) -> dict[s
         except ValueError as error:
             reason = str(error)
         if reason:
-            rejected.append({"id": record["id"], "reason": reason, "model_answer": answer})
+            rejected.append(
+                {"text_id": record["text_id"], "reason": reason, "model_answer": answer}
+            )
             continue
-        rows.append({"id": record["id"], "predicted_ade": bool(item["predicted_ade"])})
+        rows.append({"text_id": record["text_id"], "predicted_ade": bool(item["predicted_ade"])})
     return {
         "ade_classification": align(
             pa.Table.from_pylist(rows, schema=ADE_CLASSIFICATION), ADE_CLASSIFICATION
