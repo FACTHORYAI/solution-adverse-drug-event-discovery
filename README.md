@@ -39,6 +39,12 @@ Steps 1 to 4 need a text model. Steps 5 and 6 are plain SQL on DuckDB and need n
 - The agent skill in `skills/` and the starter page in `pages/` describe how to work with the tables and the jobs.
 - Sample data in this repository is synthetic. No real patient data and no real conversations.
 
+## What the result could look like
+
+![Mock-up of a Facthory report page titled "Adverse drug event signals", marked "Sample data": four figures (texts read, texts reporting an event, linked drug and event pairs, classifier accuracy), a table of the most linked drug and adverse event pairs with their text counts, a bar chart of the most mentioned adverse events, and a bar chart of how the text asserts each event.](docs/images/adverse-event-signals-mockup.png)
+
+A design illustration of a report built from this solution's tables, drawn from this repository's own sample data (300 invented texts). It is a mock-up: the page layout is a design, not a screenshot of a released feature, and the accuracy shown compares invented predictions with the labels.
+
 ## Jobs
 
 | Job | What it does | Inputs | Outputs |
@@ -110,5 +116,5 @@ Bandpey GmbH (“Facthory”) does not dispense medical, diagnosis, or treatment
 
 ## Licence
 
-Apache-2.0. See [LICENSE](LICENSE). "Facthory" and the Facthory logo are trademarks of their owner and are not covered by that licence.
+Apache-2.0. See [LICENSE](LICENSE). "Facthory" and the Facthory logo are trademarks of their owner and are not covered by that licence. This includes the logo shown in the image under `docs/images/`.
 
